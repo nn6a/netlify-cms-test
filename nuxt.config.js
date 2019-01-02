@@ -1,11 +1,12 @@
-var glob = require('glob');
-var path = require('path');
+const glob = require('glob');
+const path = require('path');
 
 // Enhance Nuxt's generate process by gathering all content files from Netifly CMS
 // automatically and match it to the path of your Nuxt routes.
 // The Nuxt routes are generate by Nuxt automatically based on the pages folder.
-var dynamicRoutes = getDynamicPaths({
-  '/blog': 'blog/posts/*.json'
+const dynamicRoutes = getDynamicPaths({
+  '/blog': 'blog/posts/*.json',
+  '/test': 'test/posts/*.json'
 });
 
 
@@ -61,7 +62,7 @@ module.exports = {
 function getDynamicPaths(urlFilepathTable) {
   return [].concat(
     ...Object.keys(urlFilepathTable).map(url => {
-      var filepathGlob = urlFilepathTable[url];
+      const filepathGlob = urlFilepathTable[url];
       return glob
         .sync(filepathGlob, { cwd: 'content' })
         .map(filepath => `${url}/${path.basename(filepath, '.json')}`);

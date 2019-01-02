@@ -1,8 +1,22 @@
 <template>
   <section class="container">
-    <h2>Blog</h2>
+    <h2>NEWS</h2>
     <ul>
-      <li v-for="post in posts" :key="post.date">
+      <li v-for="post in all" :key="post.date">
+        <nuxt-link :to="post._path">
+          {{ post.title }}
+        </nuxt-link>
+      </li>
+    </ul>
+    <ul>
+      <li v-for="post in blog" :key="post.date">
+        <nuxt-link :to="post._path">
+          {{ post.title }}
+        </nuxt-link>
+      </li>
+    </ul>
+    <ul>
+      <li v-for="post in test" :key="post.date">
         <nuxt-link :to="post._path">
           {{ post.title }}
         </nuxt-link>
@@ -20,14 +34,33 @@ export default {
   },
   data() {
     // Using webpacks context to gather all files from a folder
-    const context = require.context('~/content/blog/posts/', false, /\.json$/);
+    // const context = require.context('~/content/blog/posts/', false, /\.json$/);
+    //
+    // const posts = context.keys().map(key => ({
+    //   ...context(key),
+    //   _path: `/blog/${key.replace('.json', '').replace('./', '')}`,
+    // }));
 
-    const posts = context.keys().map(key => ({
-      ...context(key),
-      _path: `/blog/${key.replace('.json', '').replace('./', '')}`
+    const blogContext = require.context('~/content/blog/posts/', false, /\.json$/);
+    const blog = blogContext.keys().map(key => ({
+      ...blogContext(key),
+      _path: `/blog/${key.replace('.json', '').replace('./', '')}`,
     }));
 
-    return { posts };
+    const testContext = require.context('~/content/test/posts/', false, /\.json$/);
+    const test = testContext.keys().map(key => ({
+      ...testContext(key),
+      _path: `/test/${key.replace('.json', '').replace('./', '')}`,
+    }));
+
+    return {
+      blog,
+      test,
+      all: [
+        ...blog,
+        ...test
+      ]
+    };
   }
 };
 </script>
